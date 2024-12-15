@@ -50,7 +50,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64,linux/arm64
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -60,25 +60,9 @@ jobs:
       - name: Build and push tagged Docker image
         uses: docker/build-push-action@v4
         with:
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64,linux/arm64
           context: .
-          load: true
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ env.BUILD_VERSION }}
-
-      - name: Run Docker image
-        run: docker run --name pg_uuidv7 ghcr.io/${{ github.repository }} /bin/sh
-
-      - name: Copy Docker container artifacts
-        run: docker cp pg_uuidv7:/srv/ ./
-
-      - name: Upload the latest artifacts to releases
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          artifacts: "srv/*"
-          makeLatest: true
-          name: ${{ env.GIT_TAG }}
-          tag: ${{ env.GIT_TAG }}
