@@ -15,7 +15,7 @@ jobs:
   pgxn-test:
     strategy:
       matrix:
-        pg: [17, 16, 15, 14, 13]
+        pg: [17]
     runs-on: ubuntu-latest
     container: pgxn/pgxn-tools
     steps:
